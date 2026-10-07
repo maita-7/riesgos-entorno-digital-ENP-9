@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Riesgos en el entorno digital - ENP 5</title>
+    
+    <!-- Reveal.js Core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/night.min.css" id="theme">
+    
+    <!-- Font Awesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS Personalizado - Arquitectura Robusta Cero Desborde -->
+    <style>
+        :root {
+            --unam-blue: #002B5C;
+            --unam-gold: #FFD700;
+            --cyber-cyan: #00FFFF;
+            --alert-red: #FF3366;
+            --safe-green: #00FF66;
+            --dark-bg: #050505;
+            --panel-bg: #11141A;
+            --border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Limpieza Absoluta de Layout: Dejar que Reveal controle el lienzo */
+        body {
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 43, 92, 0.4), transparent 70%);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #FFFFFF;
+            overflow: hidden;
+        }
+
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            text-transform: none;
+            font-weight: 800;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .reveal h1 {
+            color: var(--unam-gold);
+            font-size: 55px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .reveal h2 {
+            color: #FFFFFF;
+            font-size: 38px;
+            border-bottom: 3px solid var(--cyber-cyan);
+            display: inline-block;
+            padding-bottom: 8px;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .module-badge {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--unam-gold);
+            padding: 8px 20px;
+            border-radius: 25px;
+            border: 2px solid var(--unam-gold);
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Paneles de Contenido de Altura Controlada */
+        .glass-panel {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px 40px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            text-align: left;
+            width: 90%;
+            max-width: 1100px;
+            box-sizing: border-box;
+        }
+
+        .glass-panel h4 {
+            font-size: 26px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .glass-panel p, .glass-panel li {
+            font-size: 20px;
+            line-height: 1.5;
+            color: #E0E6ED;
+            margin-bottom: 12px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .glass-panel ul {
+            padding-left: 30px;
+            margin-bottom: 0;
+        }
+
+        /* Bordes Temáticos */
+        .box-threat { border-top: 5px solid var(--alert-red); }
+        .box-threat h4 { color: var(--alert-red); }
+        .box-how { border-top: 5px solid var(--unam-gold); }
+        .box-how h4 { color: var(--unam-gold); }
+        .box-prevent { border-top: 5px solid var(--cyber-cyan); }
+        .box-prevent h4 { color: var(--cyber-cyan); }
+        .box-react { border-top: 5px solid var(--safe-green); }
+        .box-react h4 { color: var(--safe-green); }
+
+        /* Cajas de Estadísticas Verticales */
+        .stat-card-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: rgba(255, 215, 0, 0.05);
+            border: 3px solid var(--unam-gold);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-card .stat-highlight {
+            font-size: 45px;
+            font-weight: 900;
+            color: var(--unam-gold);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+            font-size: 18px;
+            color: #FFF;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .stat-source {
+            font-size: 14px;
+            color: #888;
+            margin-top: 15px;
+            display: block;
+            font-style: italic;
+        }
+
+        /* ================= SIMULADORES EN 2 COLUMNAS (SEGUROS) ================= */
+        .sim-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: stretch;
+            width: 95%;
+            max-width: 1200px;
+            gap: 25px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .sim-col-text {
+            flex: 1;
+            background: var(--panel-bg);
+            border: 2px solid var(--cyber-cyan);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+
+        .sim-col-text p {
+            font-size: 19px;
+            line-height: 1.5;
+            color: #FFF;
+            margin: 0;
+        }
+
+        .sim-col-btns {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-cyber {
+            background: #1A1F2B;
+            color: #FFFFFF;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 12px 18px;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+        }
+
+        .btn-cyber:hover {
+            border-color: var(--cyber-cyan);
+            background: #0A1922;
+        }
+
+        .btn-cyber .letter {
+            background: #000;
+            padding: 8px 14px;
+            border-radius: 6px;
+            margin-right: 15px;
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--unam-gold);
+            border: 2px solid var(--unam-gold);
+            flex-shrink: 0;
+        }
+
+        .btn-cyber.correct {
+            background: rgba(0, 255, 102, 0.15);
+            border-color: var(--safe-green);
+        }
+        .btn-cyber.correct .letter { background: var(--safe-green); color: #000; border-color: var(--safe-green); }
+
+        /* Resultado del Simulador */
+        .sim-result {
+            display: none;
+            width: 90%;
+            max-width: 1000px;
+            padding: 35px 40px;
+            border-radius: 15px;
+            background: #050505;
+            border: 6px solid;
+            text-align: center;
+            margin: 0 auto;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sim-result h2 {
+            font-size: 35px;
+            border: none;
+            margin-bottom: 15px;
+        }
+
+        .sim-result p {
+            font-size: 22px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .btn-return {
+            padding: 12px 25px;
+            font-size: 18px;
+            background: transparent;
+            color: #FFF;
+            border: 2px solid #FFF;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+        }
+        .btn-return:hover { background: #FFF; color: #000; }
+
+        /* Directorio Redes */
+        .plataformas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .plat-card {
+            background: rgba(255,255,255,0.05);
+            border-left: 4px solid var(--cyber-cyan);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .plat-card h5 {
+            color: var(--cyber-cyan);
+            font-size: 20px;
+            margin: 0 0 5px 0;
+        }
+        .plat-card p {
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .footer-logo {
+            position: fixed;
+            bottom: 15px;
+            left: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            z-index: 1000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <!-- SECCIONES 100% HORIZONTALES PARA EVITAR SCROLL Y DESBORDAMIENTOS -->
+        <div class="slides">
+            
+            <!-- 1. PORTADA -->
+            <section data-transition="zoom">
+                <i class="fa-solid fa-shield-halved" style="font-size: 80px; color: var(--cyber-cyan); margin-bottom: 20px;"></i>
+                <h1>Riesgos en el entorno digital</h1>
+                <div style="margin-top: 30px; border-top: 2px solid rgba(255,255,255,0.3); padding-top: 20px; width: 60%; margin-left: auto; margin-right: auto;">
+                    <p style="font-size: 24px; color: var(--unam-gold); font-weight: bold; letter-spacing: 4px; margin: 0;">
+                        ESCUELA NACIONAL PREPARATORIA PLANTEL 5
+                    </p>
+                </div>
+            </section>
+
+            <!-- 2. INTRODUCCIÓN -->
+            <section data-transition="slide">
+                <h2>El Ecosistema Digital Actual</h2>
+                <div class="glass-panel">
+                    <p style="text-align: center; font-size: 24px; margin-bottom: 20px; color: var(--unam-gold); font-weight: bold;">El mundo digital no se limita a "que te hackeen la computadora".</p>
+                    <p style="text-align: center;">Hoy enfrentamos vectores de ataque impulsados por <strong>Inteligencia Artificial generativa</strong>, redes complejas de <strong>Ingeniería Social</strong> y plataformas de <strong>Gaming</strong> que vulneran directamente nuestra integridad física, nuestra privacidad, nuestro patrimonio y nuestra salud mental.</p>
+                </div>
+            </section>
+
+            <!-- 3. ESTADÍSTICAS: CIBERACOSO EN MÉXICO -->
+            <section data-transition="fade">
+                <span class="module-badge">Radiografía Nacional</span>
+                <h2>El Ciberacoso en Cifras Oficiales</h2>
+                <div class="stat-card-container">
+                    <div class="stat-card">
+                        <i class="fa-solid fa-users text-gold" style="font-size: 50px; margin-bottom: 10px;"></i>
+                        <span class="stat-highlight">20.8%</span>
+                        <p>De los usuarios de internet en México (9.7 millones de personas) vivieron alguna situación de acoso digital activo durante el último año.</p>
+                        <p style="color: #CCC; font-size: 16px; margin-top: 10px;">El 22.4% de las mujeres y el 19.1% de los hombres entre 12 y 19 años son el sector poblacional con mayor prevalencia en todo el país.</p>
+                        <span class="stat-source">Fuente: Módulo sobre Ciberacoso (MOCIBA) - INEGI</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. ESTADÍSTICAS: EXTORSIONES MÓVILES -->
+            <section data-transition="fade">
+                <span class="module-badge">Radiografía Nacional</span>
+                <h2>El Teléfono Celular como Arma Principal</h2>
+                <div class="stat-card-container">
+                    <div class="stat-card" style="border-color: var(--cyber-cyan);">
+                        <i class="fa-solid fa-mobile-screen-button text-cyan" style="font-size: 50px; margin-bottom: 10px;"></i>
+                        <span class="stat-highlight" style="color: var(--cyber-cyan);">73%</span>
+                        <p>De los intentos de extorsión registrados en México se operan directamente a través de llamadas de celular o mensajes de WhatsApp.</p>
+                        <p style="color: #CCC; font-size: 16px; margin-top: 10px;">Más de 850 reportes mensuales corresponden a menores de edad y jóvenes amenazados mediante suplantación de identidad o engaños de ingeniería social.</p>
+                        <span class="stat-source">Fuente: Consejo Ciudadano para la Seguridad y Justicia CDMX</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. ESTADÍSTICAS: PLATAFORMAS CON MÁS INCIDENTES (NUEVA AÑADIDA) -->
+            <section data-transition="slide">
+                <span class="module-badge">Radiografía de Plataformas</span>
+                <h2>Redes con Mayor Frecuencia de Delitos</h2>
+                <div class="glass-panel">
+                    <p style="margin-bottom: 10px; font-size: 18px;">De acuerdo con la Policía Cibernética (SSC CDMX), las agresiones se concentran en:</p>
+                    <div class="plataformas-grid">
+                        <div class="plat-card">
+                            <h5><i class="fa-brands fa-whatsapp"></i> WhatsApp (61.5%)</h5>
+                            <p>Amenazas, Vishing (llamadas falsas), suplantación de identidad y distribución de stickers denigrantes en grupos de la prepa.</p>
+                        </div>
+                        <div class="plat-card">
+                            <h5><i class="fa-brands fa-facebook"></i> Facebook (53.4%)</h5>
+                            <p>Creación de perfiles falsos, difamación masiva, doxing (revelación de domicilio) y grupos de "quemadas".</p>
+                        </div>
+                        <div class="plat-card">
+                            <h5><i class="fa-brands fa-instagram"></i> Instagram (39.7%)</h5>
+                            <p>Extorsión mediante mensajes directos (DM), Catfishing y creación de cuentas secundarias para acoso anónimo.</p>
+                        </div>
+                        <div class="plat-card">
+                            <h5><i class="fa-brands fa-telegram"></i> Telegram y TikTok</h5>
+                            <p>Extracción de videos para clonar voz con IA y uso de bots en Telegram para fabricar desnudos falsos automatizados.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. ESTADÍSTICAS: IA Y DEEPFAKES -->
+            <section data-transition="fade">
+                <span class="module-badge">Radiografía Global</span>
+                <h2>La Inteligencia Artificial Armada</h2>
+                <div class="stat-card-container">
+                    <div class="stat-card" style="border-color: var(--alert-red);">
+                        <i class="fa-solid fa-robot text-red" style="font-size: 50px; margin-bottom: 10px;"></i>
+                        <span class="stat-highlight" style="color: var(--alert-red);">+180%</span>
+                        <p>Crecimiento en la creación de material íntimo falso (Deepfakes) generado contra menores de edad.</p>
+                        <p style="color: #CCC; font-size: 16px; margin-top: 10px;">El 96% de todos los videos deepfake detectados en la red corresponden a pornografía no consensuada (NCII) creada con herramientas de IA gratuitas.</p>
+                        <span class="stat-source">Fuente: Internet Watch Foundation (IWF)</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= MODULO 1: IDENTIDAD ================= -->
+
+            <!-- 7. M1: AMENAZA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 1: Identidad y Privacidad</span>
+                <h2><i class="fa-solid fa-location-crosshairs"></i> Oversharing y Doxing</h2>
+                <div class="glass-panel box-threat">
+                    <h4><i class="fa-solid fa-triangle-exclamation"></i> 1. La Amenaza</h4>
+                    <p><strong>Oversharing:</strong> Es la sobreexposición voluntaria y desmedida de información íntima, rutinas diarias y vida escolar en redes sociales buscando validación social.</p>
+                    <p><strong>Doxing:</strong> Es la práctica en la que un atacante recopila toda esa información pública (domicilio, horarios, familiares) para compilarla y publicarla, incitando al linchamiento digital o agresiones físicas.</p>
+                </div>
+            </section>
+
+            <!-- 8. M1: CÓMO OPERA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 1: Identidad y Privacidad</span>
+                <h2><i class="fa-solid fa-magnifying-glass"></i> ¿Cómo opera el atacante?</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-user-secret"></i> 2. Rastreo mediante OSINT</h4>
+                    <p>Los atacantes emplean Inteligencia de Fuentes Abiertas (OSINT) sin hackear nada:</p>
+                    <ul>
+                        <li>Inspeccionan fotografías para identificar fachadas de casas y placas de autos.</li>
+                        <li>Identifican logotipos de la ENP 5 en uniformes y paradas de transporte cercanas.</li>
+                        <li>Rastrean árboles familiares leyendo comentarios públicos de tíos o padres en Facebook.</li>
+                        <li>Monitorean historias en vivo de Instagram para conocer tu posición geográfica exacta.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 9. M1: PREVENCIÓN -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 1: Identidad y Privacidad</span>
+                <h2><i class="fa-solid fa-shield"></i> Protocolo de Prevención</h2>
+                <div class="glass-panel box-prevent">
+                    <h4><i class="fa-solid fa-lock"></i> 3. ¿Cómo evitarlo?</h4>
+                    <p>Desactiva los permisos de "Ubicación Precisa" en la cámara de tu celular y en redes sociales.</p>
+                    <p><strong>Aplica la Regla del Diferido:</strong> Publica fotos, historias o check-ins de lugares que visites <em>únicamente cuando ya te hayas retirado del establecimiento</em> y estés en un lugar seguro.</p>
+                    <p>Nunca compartas fotografías que muestren tu credencial de la UNAM o pases de abordar (sus códigos de barras y QR contienen datos biográficos legibles).</p>
+                </div>
+            </section>
+
+            <!-- 10. M1: REACCIÓN -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 1: Identidad y Privacidad</span>
+                <h2><i class="fa-solid fa-truck-medical"></i> Ruta de Reacción Rápida</h2>
+                <div class="glass-panel box-react">
+                    <h4><i class="fa-solid fa-bolt"></i> 4. ¿Qué hacer ante un ataque de Doxing?</h4>
+                    <p>Si tus datos privados o domicilio fueron publicados en foros o redes, cambia de inmediato la privacidad de todas tus cuentas a "Modo Privado" y retira fotografías donde aparezcan tus familiares.</p>
+                    <p>Notifica de inmediato a tus padres y tutores para modificar temporalmente las rutas de traslado hacia la Prepa 5.</p>
+                    <p>Documenta mediante capturas de pantalla (enlaces URL y usuarios). Exponer datos sensibles para causar daño es un delito federal.</p>
+                </div>
+            </section>
+
+            <!-- 11. M1: SIMULADOR (DOXING) -->
+            <section data-transition="convex">
+                <span class="module-badge" style="border-color: var(--cyber-cyan); color: var(--cyber-cyan);">Actividad Interactiva 1</span>
+                <h2><i class="fa-solid fa-location-dot"></i> El Check-In en Tiempo Real</h2>
+                
+                <div id="sim1-main" class="sim-container">
+                    <div class="sim-col-text">
+                        <p><strong>El Escenario:</strong> Saliste de clases y estás con unos amigos en una plaza comercial cercana a la Prepa 5. Subes una "Historia" en vivo etiquetando el local comercial exacto. Cinco minutos después, una cuenta anónima sin foto te responde por privado: <em>"Qué bien te ves hoy, ya vi dónde estás sentado, voy para allá a buscarte."</em></p>
+                    </div>
+                    
+                    <div class="sim-col-btns">
+                        <button class="btn-cyber" onclick="showResult('sim1', false, 'Responder a una provocación anónima valida al hostigador y le confirma que estás en el lugar. Retar a un perfil desconocido pone en riesgo directo tu integridad física en el espacio público.')">
+                            <span class="letter">A</span> Le respondo "A ver si es cierto, aquí te espero" para demostrar seguridad y ver quién es.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim1', true, '¡Decisión Correcta! Eliminas la fuente de geolocalización pública (frenando el doxing), te trasladas a una zona transitada y activas tu red de apoyo presencial.')">
+                            <span class="letter">B</span> Borro la historia de inmediato, me desplazo a una zona concurrida y doy aviso a mis amigos.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim1', false, 'Subestimar una amenaza de aproximación física es peligroso. El primer paso ineludible es eliminar la publicación para frenar el rastreo continuo de tu ubicación.')">
+                            <span class="letter">C</span> Ignoro el mensaje y continúo en el local; como hay mucha gente alrededor, no pasará nada.
+                        </button>
+                    </div>
+                </div>
+
+                <div id="sim1-result" class="sim-result"></div>
+            </section>
+
+            <!-- ================= MODULO 2: GAMING / GROOMING ================= -->
+
+            <!-- 12. M2: AMENAZA GAMING -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 2: Videojuegos y Grooming</span>
+                <h2><i class="fa-solid fa-gamepad"></i> El Peligro del Grooming</h2>
+                <div class="glass-panel box-threat">
+                    <h4><i class="fa-solid fa-triangle-exclamation"></i> 1. La Amenaza</h4>
+                    <p>Las plataformas de videojuegos en línea y servidores de mensajería para gamers se han convertido en el entorno predilecto para el <strong>Grooming</strong>.</p>
+                    <p>Depredadores adultos se crean perfiles falsos suplantando identidades y fingiendo tener tu misma edad con el propósito de ganarse tu confianza, ejercer coerción y obtener contenido íntimo o forzar encuentros físicos.</p>
+                </div>
+            </section>
+
+            <!-- 13. M2: ESTADÍSTICAS DE GAMING (NUEVA AÑADIDA) -->
+            <section data-transition="fade">
+                <span class="module-badge">Módulo 2: Videojuegos y Grooming</span>
+                <h2>Juegos con Mayor Riesgo de Contacto</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-headset"></i> Plataformas bajo la lupa en LatAm</h4>
+                    <ul>
+                        <li><strong>Roblox:</strong> Concentra más del 40% de los reportes globales de contacto riesgoso debido a sus servidores de roleplay y mensajería interna permisiva.</li>
+                        <li><strong>Free Fire:</strong> Altamente vulnerable en México por el uso de salas personalizadas, chats de voz abiertos y tráfico de microtransacciones (regalo de diamantes).</li>
+                        <li><strong>Discord:</strong> La app de migración principal donde los acosadores aíslan a los jugadores en canales privados fuera de la moderación del juego.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 14. M2: CÓMO OPERA GAMING -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 2: Videojuegos y Grooming</span>
+                <h2><i class="fa-solid fa-magnifying-glass"></i> Modus Operandi en Videojuegos</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-mask"></i> 2. La manipulación gradual</h4>
+                    <ul>
+                        <li><strong>Detección:</strong> El atacante ofrece asistencia en partidas complejas ("carrearte") y halaga constantemente tus habilidades.</li>
+                        <li><strong>Deuda psicológica:</strong> Te regala <strong>Skins, Pases de Batalla, Robux o Diamantes</strong>. Este obsequio genera un compromiso inconsciente de lealtad.</li>
+                        <li><strong>Salto de plataforma:</strong> El agresor pide abandonar el juego oficial y solicita tu WhatsApp o Telegram alegando mayor privacidad.</li>
+                        <li><strong>Extorsión:</strong> Ya en canales directos, inician preguntas sentimentales, peticiones de fotografías y manipulación emocional.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 15. M2: PREVENCIÓN GAMING -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 2: Videojuegos y Grooming</span>
+                <h2><i class="fa-solid fa-shield"></i> Protocolo de Defensa en Gaming</h2>
+                <div class="glass-panel box-prevent">
+                    <h4><i class="fa-solid fa-user-shield"></i> 3. Prevención Proactiva</h4>
+                    <p>Aplica la regla de "Cero Confianza Ciega". Si un compañero con el que juegas a diario inventa constantes pretextos técnicos para no encender la cámara en llamadas, asume que es un adulto encubierto.</p>
+                    <p><strong>Rechaza regalos virtuales de desconocidos:</strong> Nunca aceptes transferencias de monedas, skins ni recargas de personas que no conozcas personalmente en la vida real.</p>
+                    <p>Mantén todas tus comunicaciones estrictamente en los chats oficiales y canales de voz del juego, donde hay moderación.</p>
+                </div>
+            </section>
+
+            <!-- 16. M2: REACCIÓN GAMING -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 2: Videojuegos y Grooming</span>
+                <h2><i class="fa-solid fa-truck-medical"></i> Ruta de Reacción Rápida</h2>
+                <div class="glass-panel box-react">
+                    <h4><i class="fa-solid fa-ban"></i> 4. Ruptura de contacto y denuncia</h4>
+                    <p>Ante cualquier insinuación sexual, solicitud de fotos íntimas o invitaciones a reunirse a solas, <strong>corta la comunicación inmediatamente</strong>.</p>
+                    <p>Captura la pantalla guardando el ID de jugador del usuario, los chats completos y la fecha. Bloquea al usuario en el juego y en todas las redes asociadas.</p>
+                    <p>Genera un reporte ante el sistema de soporte técnico del videojuego y acude con tus padres o un orientador de la Prepa 5. Romper el secreto anula su chantaje.</p>
+                </div>
+            </section>
+
+            <!-- 17. M2: SIMULADOR GAMING -->
+            <section data-transition="convex">
+                <span class="module-badge" style="border-color: var(--cyber-cyan); color: var(--cyber-cyan);">Actividad Interactiva 2</span>
+                <h2><i class="fa-solid fa-headset"></i> El "Amigo" del Escuadrón</h2>
+                
+                <div id="sim2-main" class="sim-container">
+                    <div class="sim-col-text">
+                        <p><strong>El Escenario:</strong> Un compañero con el que juegas en línea desde hace un mes te acaba de regalar un Pase de Batalla de alto costo. Minutos después te envía un mensaje: <em>"Oye amigo, pásame tu WhatsApp para agregarte a un grupo exclusivo de mi escuadrón y coordinar jugadas, es que casi no leo este chat del juego."</em></p>
+                    </div>
+                    
+                    <div class="sim-col-btns">
+                        <button class="btn-cyber" onclick="showResult('sim2', false, 'Migrar a WhatsApp expone tu número real a un desconocido. El regalo del Pase de Batalla fue el cebo para generar una deuda psicológica y sacarte del entorno moderado del juego.')">
+                            <span class="letter">A</span> Le comparto mi WhatsApp; me regaló el pase, jugamos a diario y me parece de confianza.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim2', false, 'Aceptar el obsequio mantiene activa la manipulación emocional del agresor. El atacante buscará otros medios para presionar y conseguir canales de comunicación no moderados.')">
+                            <span class="letter">B</span> Le agradezco el regalo, le digo que no uso WhatsApp pero continúo jugando y aceptando sus ítems.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim2', true, '¡Excelente Decisión! Identificaste el patrón de aislamiento del Grooming. Los depredadores buscan trasladar a la víctima a canales cerrados. Rechazar el regalo y cortar el vínculo neutraliza el riesgo.')">
+                            <span class="letter">C</span> Rechazo la invitación de salir del juego, no acepto su regalo, lo elimino de amigos y lo bloqueo.
+                        </button>
+                    </div>
+                </div>
+
+                <div id="sim2-result" class="sim-result"></div>
+            </section>
+
+            <!-- ================= MODULO 3: DEEPFAKES / SEXTORSIÓN ================= -->
+
+            <!-- 18. M3: AMENAZA IA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 3: Violencia Digital e IA</span>
+                <h2><i class="fa-solid fa-scale-balanced"></i> Sextorsión y Deepfakes (NCII)</h2>
+                <div class="glass-panel box-threat">
+                    <h4><i class="fa-solid fa-triangle-exclamation"></i> 1. La Amenaza Sintética</h4>
+                    <p><strong>Sextorsión:</strong> Es la extorsión en la que se amenaza con difundir fotografías o videos íntimos reales entregados previamente en una relación de confianza.</p>
+                    <p><strong>Deepfakes / NCII (Imágenes Íntimas No Consensuadas):</strong> Hoy los agresores recurren a <strong>Inteligencia Artificial generativa</strong> para procesar fotografías convencionales y crear desnudos falsos hiperrealistas sin tu autorización, con el fin de chantajearte y humillarte.</p>
+                </div>
+            </section>
+
+            <!-- 19. M3: CÓMO OPERA IA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 3: Violencia Digital e IA</span>
+                <h2><i class="fa-solid fa-wand-magic-sparkles"></i> ¿Cómo fabrican la extorsión sintética?</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-gears"></i> 2. La automatización del daño</h4>
+                    <p>El agresor (desconocido o incluso un compañero) recopila fotografías de rostro de perfiles públicos de Instagram o TikTok.</p>
+                    <p>Ingresa las imágenes en <strong>bots clandestinos de Telegram</strong> o aplicaciones web diseñadas para "desnudar" mediante modelos matemáticos de IA.</p>
+                    <p>En segundos genera montajes realistas y contacta a la víctima con un ultimátum: <em>"Transfiere $3,000 pesos en 2 horas o difundiremos las fotos en grupos escolares de la Prepa 5 y con tus familiares"</em>.</p>
+                </div>
+            </section>
+
+            <!-- 20. M3: MARCO LEGAL (LEY OLIMPIA) -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 3: Violencia Digital e IA</span>
+                <h2><i class="fa-solid fa-gavel"></i> Marco Jurídico: La Ley Olimpia en México</h2>
+                <div class="glass-panel box-prevent">
+                    <h4><i class="fa-solid fa-scale-balanced"></i> El Respaldo del Código Penal Federal</h4>
+                    <p>En México, el Artículo 199 Octies del Código Penal Federal sanciona de <strong>3 a 6 años de prisión</strong> a quien elabore, modifique o comparta imágenes con contenido íntimo sexual sin consentimiento.</p>
+                    <p><strong>La legislación protege también contra montajes de IA:</strong> La ley contempla la violencia digital sobre imágenes reales o "simuladas digitalmente", ya que la afectación a la dignidad y salud psicológica de la víctima es la misma.</p>
+                </div>
+            </section>
+
+            <!-- 21. M3: PREVENCIÓN Y REACCIÓN -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 3: Violencia Digital e IA</span>
+                <h2><i class="fa-solid fa-shield"></i> Protocolo de Actuación y Reacción</h2>
+                <div class="glass-panel box-react">
+                    <h4><i class="fa-solid fa-scale-unbalanced"></i> Cero Negociación y Denuncia Legal</h4>
+                    <p><strong>NUNCA CEDAS AL CHANTAJE:</strong> Pagar una extorsión no garantiza que eliminen la imagen; únicamente comprueba que eres vulnerable y te exigirán pagos subsecuentes.</p>
+                    <p>No borres las conversaciones: guarda capturas completas donde se aprecien números telefónicos, nombres de usuario y enlaces. Esa es tu evidencia judicial.</p>
+                    <p>Comunícate inmediatamente con la <strong>Policía Cibernética de la CDMX (55 5242 5100)</strong> para gestionar la baja del contenido y formalizar la denuncia.</p>
+                </div>
+            </section>
+
+            <!-- 22. M3: SIMULADOR DEEPFAKE -->
+            <section data-transition="convex">
+                <span class="module-badge" style="border-color: var(--cyber-cyan); color: var(--cyber-cyan);">Actividad Interactiva 3</span>
+                <h2><i class="fa-solid fa-camera-retro"></i> El Chantaje Sintético (IA)</h2>
+                
+                <div id="sim3-main" class="sim-container">
+                    <div class="sim-col-text">
+                        <p><strong>El Escenario:</strong> Recibes un DM anónimo en Instagram con una fotografía tuya manipulada mediante Inteligencia Artificial donde simulan que estás sin ropa. El mensaje advierte: <em>"Tenemos tu material privado. Si no depositas $1,500 pesos en las próximas 2 horas, se lo enviaremos a toda tu lista de contactos y profesores."</em></p>
+                    </div>
+                    
+                    <div class="sim-col-btns">
+                        <button class="btn-cyber" onclick="showResult('sim3', false, 'Negociar o transferir dinero comprueba que tienes solvencia económica y temor. Los extorsionadores exigirán montos mayores después y jamás eliminarán el archivo.')">
+                            <span class="letter">A</span> Entro en pánico, intento negociar para que me rebajen la cantidad y les transfiero para evitar la difusión.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim3', false, 'Eliminar el chat destruye las pruebas periciales que necesita la Fiscalía. Ignorar la amenaza no impide que el agresor intente contactar a tus conocidos.')">
+                            <span class="letter">B</span> Borro el mensaje de inmediato para tranquilizarme, bloqueo la cuenta y asumo que es una broma.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim3', true, '¡Protocolo Correcto! Preservas la evidencia para la Policía Cibernética, amparándote en la Ley Olimpia (que castiga penalmente los montajes sintéticos). Cortas la comunicación y buscas apoyo formal.')">
+                            <span class="letter">C</span> Tomo capturas de pantalla, no realizo ningún pago, bloqueo la cuenta y acudo con un adulto para denunciar.
+                        </button>
+                    </div>
+                </div>
+
+                <div id="sim3-result" class="sim-result"></div>
+            </section>
+
+            <!-- ================= MODULO 4: INGENIERÍA SOCIAL / VISHING ================= -->
+
+            <!-- 23. M4: AMENAZA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 4: Ingeniería Social e IA</span>
+                <h2><i class="fa-solid fa-phone-volume"></i> Phishing y Vishing (Clonación de Voz)</h2>
+                <div class="glass-panel box-threat">
+                    <h4><i class="fa-solid fa-triangle-exclamation"></i> 1. La Amenaza</h4>
+                    <p><strong>Phishing de Cuentas:</strong> Procedimientos fraudulentos diseñados para engañarte y obtener tus códigos de acceso para suplantar tu identidad en WhatsApp, Instagram o correos.</p>
+                    <p><strong>Vishing (Phishing por Voz con IA):</strong> Esquemas de extorsión telefónica donde los delincuentes utilizan <strong>herramientas de Inteligencia Artificial para clonar la voz exacta</strong> de un familiar directo y fingir accidentes graves o privaciones ilegales de la libertad.</p>
+                </div>
+            </section>
+
+            <!-- 24. M4: CÓMO OPERA IA EN VOZ -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 4: Ingeniería Social e IA</span>
+                <h2><i class="fa-solid fa-robot"></i> La IA y el Secuestro Virtual</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-microchip"></i> 2.A. ¿Cómo clonan tu voz con Inteligencia Artificial?</h4>
+                    <p>Los algoritmos generativos de clonación de voz requieren únicamente <strong>3 segundos de audio nítido</strong> para mapear el timbre, acento y modulación de una persona.</p>
+                    <p>Los delincuentes extraen ese audio de videos públicos publicados en TikTok o Instagram. Mediante software de síntesis, escriben un texto que es reproducido con la voz idéntica del familiar gritando por auxilio.</p>
+                    <p>Usan tecnología de <em>Caller ID Spoofing</em> para falsear el número telefónico y hacer que aparezca registrado con el nombre de tu papá/mamá, bloqueando tu juicio analítico mediante pánico extremo.</p>
+                </div>
+            </section>
+
+            <!-- 25. M4: CÓMO ROBAN WHATSAPP -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 4: Ingeniería Social e IA</span>
+                <h2><i class="fa-brands fa-whatsapp"></i> El Ataque al Buzón de Voz</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-voicemail"></i> 2.B. Secuestro de WhatsApp en la madrugada</h4>
+                    <p>El robo de WhatsApp no requiere hackers expertos; explota la configuración por defecto de los operadores telefónicos:</p>
+                    <ul>
+                        <li>El atacante intenta registrar tu cuenta en un dispositivo ajeno a las 3:00 a.m.</li>
+                        <li>Al no responder tú el SMS porque estás dormido, solicita que WhatsApp te llame para dictar el código.</li>
+                        <li>La llamada rebota a tu buzón de voz (Telcel, AT&T, Movistar).</li>
+                        <li>El atacante marca a tu buzón desde otra línea. Si no cambiaste el NIP por defecto (0000), entra, escucha el código y secuestra tu sesión.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 26. M4: PREVENCIÓN ZERO TRUST -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 4: Ingeniería Social e IA</span>
+                <h2><i class="fa-solid fa-shield-halved"></i> Protocolo "Zero Trust" (Confianza Cero)</h2>
+                <div class="glass-panel box-prevent">
+                    <h4><i class="fa-solid fa-lock"></i> 3. Prevención y Blindaje Técnico</h4>
+                    <p><strong>Blindaje de WhatsApp:</strong> Ingresa a Ajustes > Cuenta > <strong>Verificación en dos pasos (2FA)</strong> y crea un PIN de 6 dígitos que protegerá tu cuenta. Llama a tu operador telefónico para asignar un NIP seguro a tu buzón de voz o pedir su cancelación definitiva.</p>
+                    <p><strong>Blindaje Contra Clonación de Voz:</strong> Acuerda una <strong>"Palabra Clave Familiar"</strong> secreta con tus padres. Si recibes una llamada desesperada pidiendo dinero y la voz no conoce la palabra clave acordada, estás ante una extorsión de IA.</p>
+                </div>
+            </section>
+
+            <!-- 27. M4: REACCIÓN VISHING -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 4: Ingeniería Social e IA</span>
+                <h2><i class="fa-solid fa-truck-medical"></i> Ruta de Reacción Rápida</h2>
+                <div class="glass-panel box-react">
+                    <h4><i class="fa-solid fa-phone-slash"></i> 4. Cómo actuar ante una llamada de extorsión</h4>
+                    <p><strong>Corta la llamada inmediatamente:</strong> Rompe el ciclo psicológico del pánico. Colgar es seguro porque los extorsionadores no tienen retenido a tu familiar físicamente.</p>
+                    <p>Realiza una llamada tradicional de inmediato al número directo de tu familiar o a su lugar de trabajo para confirmar su estado de salud.</p>
+                    <p>Nunca efectúes depósitos en tiendas de conveniencia (OXXO) ni transferencias bancarias de emergencia antes de haber establecido comunicación directa y presencial con tu familia.</p>
+                </div>
+            </section>
+
+            <!-- 28. M4: SIMULADOR VISHING -->
+            <section data-transition="convex">
+                <span class="module-badge" style="border-color: var(--cyber-cyan); color: var(--cyber-cyan);">Actividad Interactiva 4</span>
+                <h2><i class="fa-solid fa-phone-slash"></i> La Llamada de Pánico (Vishing)</h2>
+                
+                <div id="sim4-main" class="sim-container">
+                    <div class="sim-col-text">
+                        <p><strong>El Escenario:</strong> Recibes una llamada donde el identificador marca el contacto de "Papá". Al contestar, escuchas con absoluta claridad su voz llorando: <em>"¡Hijo, choqué contra una camioneta y me tienen rodeado personas armadas! Deposítales $5,000 pesos a la cuenta que te voy a dictar o me harán daño, ¡no llames a tu mamá!"</em></p>
+                    </div>
+                    
+                    <div class="sim-col-btns">
+                        <button class="btn-cyber" onclick="showResult('sim4', false, 'El pánico es el arma de la ingeniería social. El número fue falsificado mediante Spoofing y la voz fue generada con IA. El dinero irá a parar a cuentas puente de extorsionadores y no salvará a nadie.')">
+                            <span class="letter">A</span> Corro a depositar los ahorros al OXXO; es de vida o muerte y su voz suena perfecta.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim4', false, 'Quedarte en la línea permite que sigan amenazándote y te aísla de pedir ayuda o verificar el paradero real de tu padre en ese momento.')">
+                            <span class="letter">B</span> Me quedo en la llamada intentando razonar con los agresores para solicitarles tiempo.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim4', true, '¡Decisión Correcta! Colgar de inmediato rompe el secuestro virtual. Al usar una vía alterna o exigir la Palabra Clave Familiar, el engaño de la IA queda neutralizado.')">
+                            <span class="letter">C</span> Cuelgo la llamada de inmediato. Uso otro teléfono para marcar a su oficina, y utilizo la Palabra Clave Familiar.
+                        </button>
+                    </div>
+                </div>
+
+                <div id="sim4-result" class="sim-result"></div>
+            </section>
+
+            <!-- ================= MODULO 5: RIESGOS TÉCNICOS / MALWARE ================= -->
+
+            <!-- 29. M5: AMENAZA TÉCNICA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 5: Riesgos Técnicos</span>
+                <h2><i class="fa-solid fa-bug"></i> Malware y Stalkerware</h2>
+                <div class="glass-panel box-threat">
+                    <h4><i class="fa-solid fa-triangle-exclamation"></i> 1. La Amenaza Invisible</h4>
+                    <p><strong>Malware / Troyanos:</strong> Código malicioso que ingresa encubierto en archivos o aplicaciones modificadas ("mods", "hacks", versiones piratas) para sustraer contraseñas, credenciales bancarias y contactos.</p>
+                    <p><strong>Stalkerware (Software Espía):</strong> Aplicaciones de vigilancia no consentida instaladas físicamente por personas cercanas (frecuente en situaciones de violencia en el noviazgo) para rastrear GPS, leer mensajes y activar micrófonos de manera oculta.</p>
+                </div>
+            </section>
+
+            <!-- 30. M5: ESTADÍSTICAS MALWARE EN MÉXICO -->
+            <section data-transition="fade">
+                <span class="module-badge">Módulo 5: Riesgos Técnicos</span>
+                <h2>Estadísticas de Infecciones Móviles</h2>
+                <div class="stat-card-container">
+                    <div class="stat-card">
+                        <i class="fa-solid fa-shield-virus text-gold" style="font-size: 55px; margin-bottom: 15px;"></i>
+                        <span class="stat-highlight">2° Lugar Latinoamericano</span>
+                        <p>México es el segundo país con mayor número de ataques de malware a dispositivos móviles.</p>
+                        <p style="color: #CCC; font-size: 18px; margin-top: 10px;">Se registran más de 120,000 intentos de infección diarios derivados de descargas de APKs no oficiales (como WhatsApp Plus, Spotify crackeado y mods de videojuegos).</p>
+                        <span class="stat-source">Fuente: Panorama de Amenazas en América Latina - Kaspersky</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 31. M5: STALKERWARE Y PAREJA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 5: Riesgos Técnicos</span>
+                <h2><i class="fa-solid fa-eye"></i> Stalkerware y Violencia de Pareja</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-magnifying-glass"></i> 2. La invasión silenciosa a la privacidad</h4>
+                    <p>En dinámicas de noviazgos tóxicos, la pareja solicita el teléfono argumentando confianza ("si no tienes nada que ocultar, préstamelo"). Con el PIN de desbloqueo, instalan aplicaciones espía comerciales en menos de 2 minutos.</p>
+                    <p>Estas herramientas se camuflan bajo nombres de sistema (como "Configuración" o "Calculadora").</p>
+                    <p>Envían en tiempo real al correo del agresor: capturas de pantalla, registros de llamadas, mensajes de WhatsApp y coordenadas geográficas sin generar alertas visibles.</p>
+                </div>
+            </section>
+
+            <!-- 32. M5: PREVENCIÓN TÉCNICA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 5: Riesgos Técnicos</span>
+                <h2><i class="fa-solid fa-shield-halved"></i> Higiene Digital y Privacidad Personal</h2>
+                <div class="glass-panel box-prevent">
+                    <h4><i class="fa-solid fa-pump-medical"></i> 3. Prevención y Derechos</h4>
+                    <p><strong>Descargas exclusivamente oficiales:</strong> Nunca instales archivos con extensión .APK ni desactives las protecciones de Play Protect o App Store para instalar "versiones ilimitadas" gratuitas.</p>
+                    <p><strong>El PIN de tu teléfono no se negocia:</strong> Jamás compartas tu contraseña de acceso con tu pareja sentimental. <strong>Tener privacidad no equivale a ocultar engaños; la privacidad es un derecho humano inalienable.</strong></p>
+                </div>
+            </section>
+
+            <!-- 33. M5: REACCIÓN TÉCNICA -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 5: Riesgos Técnicos</span>
+                <h2><i class="fa-solid fa-truck-medical"></i> Ruta de Reacción ante Espionaje</h2>
+                <div class="glass-panel box-react">
+                    <h4><i class="fa-solid fa-broom"></i> 4. Detección y erradicación</h4>
+                    <p>Identifica los síntomas de infección: el celular se calienta en reposo, el consumo de datos móviles se dispara sin uso aparente, o la batería se agota drásticamente.</p>
+                    <p>Como el Stalkerware bloquea su desinstalación manual ordinaria, la única forma 100% efectiva de eliminarlo es realizar un <strong>Restablecimiento de Fábrica (Hard Reset / Format)</strong> completo.</p>
+                    <p>Cambia de inmediato todas tus contraseñas desde otro dispositivo seguro y activa la verificación en dos pasos (2FA).</p>
+                </div>
+            </section>
+
+            <!-- 34. M5: SIMULADOR TÉCNICO -->
+            <section data-transition="convex">
+                <span class="module-badge" style="border-color: var(--cyber-cyan); color: var(--cyber-cyan);">Actividad Interactiva 5</span>
+                <h2><i class="fa-solid fa-download"></i> El Software "Gratis"</h2>
+                
+                <div id="sim5-main" class="sim-container">
+                    <div class="sim-col-text">
+                        <p><strong>El Escenario:</strong> Un creador de contenido que sigues publica un tutorial titulado: <em>"Descarga la versión VIP de Spotify Premium y ChatGPT Plus gratis para siempre. Solo descarguen el archivo .APK desde el enlace fijado, apaguen Play Protect / Antivirus durante la instalación y listo."</em></p>
+                    </div>
+                    
+                    <div class="sim-col-btns">
+                        <button class="btn-cyber" onclick="showResult('sim5', false, 'Las cuentas de creadores de contenido son vulneradas constantemente para difundir troyanos. Desactivar las protecciones del dispositivo permite que el malware se instale con permisos de administrador.')">
+                            <span class="letter">A</span> Es un canal con muchos suscriptores; descargo el archivo para ahorrarme las mensualidades de la escuela.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim5', false, 'Los atacantes utilizan bots para generar cientos de comentarios positivos falsos (¡Sí funciona!). Guiarte por comentarios en internet para apagar la seguridad de tu teléfono es un error crítico.')">
+                            <span class="letter">B</span> Reviso los comentarios; al ver que varios dicen que les funcionó, asumo el riesgo y desactivo la protección.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim5', true, '¡Decisión Correcta! La regla de oro de la higiene digital establece que ningún software comercial es genuinamente gratuito; si un APK te pide deshabilitar defensas, el objetivo real es vulnerar y robar tu equipo.')">
+                            <span class="letter">C</span> Ignoro el contenido por completo. Bajar ejecutables externos y desactivar la seguridad equivale a infectar el celular.
+                        </button>
+                    </div>
+                </div>
+
+                <div id="sim5-result" class="sim-result"></div>
+            </section>
+
+            <!-- ================= MODULO 6: SALUD MENTAL Y ESTAFAS ================= -->
+
+            <!-- 35. M6: AMENAZA SALUD Y ESTAFAS -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 6: Salud Mental y Finanzas</span>
+                <h2><i class="fa-solid fa-brain"></i> Doomscrolling y Estafas Ponzi</h2>
+                <div class="glass-panel box-threat">
+                    <h4><i class="fa-solid fa-triangle-exclamation"></i> 1. La Amenaza Psicológica y Financiera</h4>
+                    <p><strong>Doomscrolling:</strong> Consumo compulsivo de contenidos alarmantes, violentos o frustrantes diseñado por algoritmos de retención que incrementan los niveles de cortisol y ansiedad en jóvenes.</p>
+                    <p><strong>Esquemas Ponzi / Falsos Cripto-Gurús:</strong> Fraudes financieros que captan a estudiantes prometiendo ingresos elevados en dólares con "dos sencillas aplicaciones", los cuales en realidad son esquemas piramidales sin inversión real bursátil.</p>
+                </div>
+            </section>
+
+            <!-- 36. M6: ESTADÍSTICAS DE SALUD MENTAL -->
+            <section data-transition="fade">
+                <span class="module-badge">Módulo 6: Salud Mental y Finanzas</span>
+                <h2>Tiempo en Pantalla y Salud Emocional</h2>
+                <div class="stat-card-container">
+                    <div class="stat-card">
+                        <i class="fa-solid fa-heart-crack text-gold" style="font-size: 55px; margin-bottom: 15px;"></i>
+                        <span class="stat-highlight">4.8 Horas</span>
+                        <p>Es el promedio de tiempo diario que pasan los adolescentes mexicanos conectados a redes sociales desde sus dispositivos.</p>
+                        <p style="color: #CCC; font-size: 18px; margin-top: 10px;">Estudios de UNICEF y el Instituto Federal de Telecomunicaciones demuestran que pasar más de 3 horas continuas incrementa en un 40% la sintomatología ansiosa y la dismorfia corporal en estudiantes de bachillerato.</p>
+                        <span class="stat-source">Fuente: Informe sobre Juventudes y Conectividad - UNICEF México</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 37. M6: CÓMO OPERA EL ENGAÑO FINANCIERO -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 6: Salud Mental y Finanzas</span>
+                <h2><i class="fa-solid fa-coins"></i> Anatomía de la Estafa Piramidal</h2>
+                <div class="glass-panel box-how">
+                    <h4><i class="fa-solid fa-chart-pie"></i> 2. La manipulación del éxito instantáneo</h4>
+                    <p>Los captadores alquilan automóviles de lujo por horas, exhiben relojes réplica y publican videos en Instagram alegando que "la universidad no sirve" y que son millonarios a los 19 años.</p>
+                    <p>Te invitan a su "academia de trading" cobrándote una cuota de ingreso de $1,500 o $2,000 pesos.</p>
+                    <p>Una vez dentro, descubres que no hay operaciones bursátiles legítimas: la única forma de cobrar comisiones es reclutar a tres amigos más. Se trata de un fraude piramidal donde el 95% de los participantes pierde su dinero.</p>
+                </div>
+            </section>
+
+            <!-- 38. M6: PREVENCIÓN SALUD/FINANZAS -->
+            <section data-transition="slide">
+                <span class="module-badge">Módulo 6: Salud Mental y Finanzas</span>
+                <h2><i class="fa-solid fa-shield"></i> Defensa Algorítmica y Criterio Financiero</h2>
+                <div class="glass-panel box-prevent">
+                    <h4><i class="fa-solid fa-filter"></i> 3. Prevención y Control</h4>
+                    <p><strong>Gobierna tu algoritmo:</strong> Utiliza el botón "No me interesa" en contenidos que te generen frustración o estándares estéticos inalcanzables. Configura límites de tiempo en aplicaciones mediante Bienestar Digital.</p>
+                    <p><strong>Máxima Financiera: El dinero fácil no existe.</strong> Cualquier propuesta que requiera reclutar personas para generar ingresos o que prometa rendimientos extraordinarios sin riesgo es matemáticamente una estafa.</p>
+                </div>
+            </section>
+
+            <!-- 39. M6: SIMULADOR PIRAMIDAL -->
+            <section data-transition="convex">
+                <span class="module-badge" style="border-color: var(--cyber-cyan); color: var(--cyber-cyan);">Actividad Interactiva 6</span>
+                <h2><i class="fa-solid fa-coins"></i> El "Cripto-Gurú"</h2>
+                
+                <div id="sim6-main" class="sim-container">
+                    <div class="sim-col-text">
+                        <p><strong>El Escenario:</strong> Un excompañero de la prepa te escribe por Instagram presumiendo fotos con un automóvil de lujo: <em>"Amigo, dejé de estudiar porque estoy ganando dólares diarios con dos aplicaciones. Únete a mi equipo VIP, la membresía cuesta $2,000 pesos pero los recuperas de inmediato invitando a dos personas más."</em></p>
+                    </div>
+                    
+                    <div class="sim-col-btns">
+                        <button class="btn-cyber" onclick="showResult('sim6', false, 'La presión social por encajar o aparentar éxito es explotada por las sectas coercitivas piramidales. Tomar deuda para entrar a un negocio fraudulento que matemáticamente colapsará arruinará tus finanzas familiares.')">
+                            <span class="letter">A</span> Pido dinero prestado a mis padres para entrar; no quiero quedarme atrás mientras otros generan ingresos.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim6', true, '¡Criterio Financiero Impecable! Si el beneficio depende de meter más reclutas y no de un producto legítimo, se trata de una pirámide (Esquema Ponzi). Cuidas tu patrimonio y a tus amigos.')">
+                            <span class="letter">B</span> Identifico que se trata de un Esquema Ponzi (Fraude Piramidal), rechazo la propuesta y bloqueo el contacto.
+                        </button>
+                        <button class="btn-cyber" onclick="showResult('sim6', false, 'Un captador jamás arriesga sus propios fondos. Mostrar interés abre la puerta a dinámicas de coerción psicológica (acusándote de tener mente cerrada) para forzarte a pagar tu ingreso.')">
+                            <span class="letter">C</span> Le digo que me interesa pero que él pague mi entrada y se la liquido con mis supuestas primeras ganancias.
+                        </button>
+                    </div>
+                </div>
+
+                <div id="sim6-result" class="sim-result"></div>
+            </section>
+
+            <!-- ================= DIRECTORIO DE AYUDA ================= -->
+
+            <!-- 40. DIRECTORIO DE APOYO -->
+            <section data-transition="slide">
+                <span class="module-badge">Ruta de Denuncia Institucional</span>
+                <h2>¿A dónde acudir si requieres auxilio?</h2>
+                <div class="glass-panel">
+                    <h4><i class="fa-solid fa-hands-holding-child"></i> Red de Apoyo Universitario Oficial</h4>
+                    <ul>
+                        <li><strong>Policía Cibernética SSC CDMX:</strong> Atención 24/7 para delitos digitales, extorsión y Ley Olimpia. Teléfono: <strong>55 5242 5100 Ext. 5086</strong> | Correo: <em>policia.cibernetica@ssc.cdmx.gob.mx</em></li>
+                        <li><strong>Consejo Ciudadano para la Seguridad y Justicia:</strong> Asesoría jurídica y contención psicológica gratuita al Teléfono/WhatsApp: <strong>55 5533 5533</strong>.</li>
+                        <li><strong>Defensoría de los Derechos Universitarios de la UNAM:</strong> Apoyo institucional para casos de violencia de género y acoso digital dentro de la comunidad UNAM.</li>
+                        <li><strong>Departamento de Orientación Educativa de la ENP 5:</strong> Tu primera red presencial de contención, respaldo académico y asesoría en tu propio plantel.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 41. CIERRE -->
+            <section data-transition="zoom">
+                <i class="fa-solid fa-fingerprint" style="font-size: 100px; color: var(--unam-gold); margin-bottom: 25px;"></i>
+                <h2 style="border-bottom: none; font-size: 52px; text-shadow: 2px 2px 15px rgba(0,0,0,0.9); margin-bottom: 20px;">Tu Poder Digital</h2>
+                <div class="glass-panel" style="text-align: center; border-color: var(--cyber-cyan); padding: 45px 55px; margin-top: 20px;">
+                    <p style="font-size: 28px; margin-bottom: 25px; color: #FFF; font-weight: bold;">Sobrevivir en el Ecosistema Digital requiere PENSAMIENTO CRÍTICO, no paranoia.</p>
+                    <p style="font-size: 24px; color: #F8F9FA; line-height: 1.6;">
+                        Aplica siempre el principio <strong>Zero Trust</strong>: duda por defecto de cualquier mensaje alarmante, oferta fácil o solicitud repentina de dinero.<br>
+                        Protege a tus compañeros de la Prepa 5: no normalices ni compartas material de quemadas ni stickers ofensivos.<br>
+                        <strong>Si eres víctima de extorsión o violencia digital, NUNCA es tu culpa. La UNAM y la ley te respaldan.</strong>
+                    </p>
+                    <h3 class="text-gold" style="margin-top: 35px; font-size: 38px;">El control de tu identidad te pertenece.</h3>
+                </div>
+            </section>
+
+        </div>
+        
+        <div class="footer-logo">
+            Riesgos en el entorno digital | ENP 5 UNAM
+        </div>
+    </div>
+
+    <!-- Scripts de Reveal.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script>
+        // CONFIGURACIÓN FULL HD WIDESCREEN (1920x1080)
+        // Con márgenes de seguridad para garantizar que nunca haya cortes en pantallas y proyectores
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true, // Flotado al centro matemáticamente
+            hash: true,
+            transition: 'slide',
+            width: 1920,
+            height: 1080, 
+            margin: 0.04,
+            minScale: 0.1,
+            maxScale: 2.0,
+            disableLayout: false 
+        });
+
+        // FUNCIONES DE CONTROL PARA SIMULADORES EN PANTALLA COMPLETA
+        function showResult(simId, isCorrect, explanation) {
+            // Ocultar el contenedor de escenario y botones
+            document.getElementById(simId + '-main').style.display = 'none';
+            
+            const resultBox = document.getElementById(simId + '-result');
+            resultBox.style.display = 'flex';
+            
+            // Definición de colores y encabezados
+            const headerColor = isCorrect ? 'var(--safe-green)' : 'var(--alert-red)';
+            const headerIcon = isCorrect ? '<i class="fa-solid fa-circle-check"></i> DECISIÓN CORRECTA' : '<i class="fa-solid fa-triangle-exclamation"></i> RIESGO CRÍTICO';
+            
+            resultBox.style.borderColor = headerColor;
+            
+            resultBox.innerHTML = `
+                <h2 style="color: ${headerColor}; font-size: 46px; border:none; margin-bottom: 20px;">${headerIcon}</h2>
+                <p style="font-size: 26px; text-align: center; margin-top: 15px; margin-bottom: 30px; line-height: 1.45;">${explanation}</p>
+                <button class="btn-return" onclick="resetSim('${simId}')"><i class="fa-solid fa-rotate-left"></i> Volver al Escenario</button>
+            `;
+            
+            Reveal.layout(); // Forzar recálculo del layout de Reveal.js
+        }
+
+        function resetSim(simId) {
+            // Ocultar tarjeta de resultado y restaurar la pantalla de decisión
+            document.getElementById(simId + '-result').style.display = 'none';
+            document.getElementById(simId + '-main').style.display = 'flex';
+            Reveal.layout();
+        }
+    </script>
+</body>
+</html>
